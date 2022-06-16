@@ -1,6 +1,6 @@
 Package: cdut
 Title: Miscellaneous Utils by Caleb
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Caleb", "Dao", , "calebjonathandao@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
