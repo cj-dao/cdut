@@ -8,6 +8,7 @@
 #'   function1() %>%
 #'   function2()
 #' NOTE: pipeline MUST be in parentheses for %csv% infix to work!
+#' @export
 `%csv%` <- function(filepath,pipe) {
   if(!exists("%>%")) {
     cat("Error in %csv%:\n  The pipeline infix operator '%>%' requires the magrittr library.\nImport magrittr library?\n(y/n)")
@@ -41,6 +42,7 @@
 #' assigns dataframe to object with the same name as the csv then returns the object
 #' e.g.: acsv("random_data") is equivalent to:
 #' random_data <- read.csv("random_data.csv")
+#' @export
 acsv <- function(filepath) {
   if(mode(filepath)!="character") {
     stop("Filepath must be a string.")
@@ -54,6 +56,7 @@ acsv <- function(filepath) {
 }
 
 #' removes columns and rows that are ALL blank or NA values
+#' @export
 trim <- function(data) {
   data <- data.frame(lapply(data, function(x) {
     x[x==""] <- NA
@@ -66,6 +69,7 @@ trim <- function(data) {
 #' dcol: date column; tcol: time column.
 #' format: optional. Defaults to "%m/%d/%y %H:%M:%S"
 #' rmdt: remove collapsed date and time columns? Defaults to true.
+#' @export
 collapse_dt <- function(data,dcol,tcol,format,rmdt) {
   dcol <- deparse(substitute(dcol))
   tcol <- deparse(substitute(tcol))
@@ -95,6 +99,7 @@ collapse_dt <- function(data,dcol,tcol,format,rmdt) {
 #' times: list of times to cut down to
 #' Note: "times" is a column, not the entire short dataset.
 #' Note: the time column of the dataset will be replaced with the target times.
+#' @export
 cut_to_times <- function(data,data_time_column,times) {
   
   # print("Working... Large datasets may take a while.")
@@ -129,11 +134,12 @@ cut_to_times <- function(data,data_time_column,times) {
   return(output)
 }
 
-# data: larger dataset
-# target_data: shorter dataset
-# tcol: date_time column to reference (no quotes needed.)
-# NOTE: the date_time column must have the same name for both datasets!
-# returned dataset will have the dates from target_data and columns from both datasets.
+#' data: larger dataset
+#' target_data: shorter dataset
+#' tcol: date_time column to reference (no quotes needed.)
+#' NOTE: the date_time column must have the same name for both datasets!
+#' returned dataset will have the dates from target_data and columns from both datasets.
+#' @export
 merge_by_times <- function(data,target_data,tcol) {
   
   # print("Working... Large datasets may take a while.")
