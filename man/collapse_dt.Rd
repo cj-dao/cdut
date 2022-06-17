@@ -2,16 +2,20 @@
 % Please edit documentation in R/cfun.R
 \name{collapse_dt}
 \alias{collapse_dt}
-\title{combines date and time columns into a numerical column
-dcol: date column; tcol: time column.
-format: optional. Defaults to "\%m/\%d/\%y \%H:\%M:\%S"
-rmdt: remove collapsed date and time columns? Defaults to true.}
+\title{Collapse date and time}
 \usage{
 collapse_dt(data, dcol, tcol, format, rmdt)
 }
+\arguments{
+\item{dcol}{Date column.}
+
+\item{tcol}{Time column}
+
+\item{format}{Optional. Defaults to "\%m/\%d/\%y \%H:\%M:\%S"}
+
+\item{rmdt}{If true, removes old date and time columns. Defaults to true.}
+}
 \description{
-combines date and time columns into a numerical column
-dcol: date column; tcol: time column.
-format: optional. Defaults to "\%m/\%d/\%y \%H:\%M:\%S"
-rmdt: remove collapsed date and time columns? Defaults to true.
+Combines date and time columns in character format
+into a single, numerical column using POSIXct.
 }

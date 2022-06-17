@@ -2,18 +2,31 @@
 % Please edit documentation in R/cfun.R
 \name{merge_by_times}
 \alias{merge_by_times}
-\title{data: larger dataset
-target_data: shorter dataset
-tcol: date_time column to reference (no quotes needed.)
-NOTE: the date_time column must have the same name for both datasets!
-returned dataset will have the dates from target_data and columns from both datasets.}
+\title{Merge by times}
 \usage{
 merge_by_times(data, target_data, tcol)
 }
+\arguments{
+\item{data}{The main data set.}
+
+\item{target_data}{The data set with times you want to match to.}
+
+\item{tcol}{The date/time column of BOTH sets (name must be the same)}
+}
 \description{
-data: larger dataset
-target_data: shorter dataset
-tcol: date_time column to reference (no quotes needed.)
-NOTE: the date_time column must have the same name for both datasets!
-returned dataset will have the dates from target_data and columns from both datasets.
+Matches one data set to another by closest time point.
+}
+\details{
+\subsection{Basic use}{
+Use when you have two data sets with date and time columns,
+and you wish to combine the data sets by matching each data point in the
+main set to the closest time point in the target set. This function will
+return the target data set with additional data columns from the main
+data set.
+}
+
+\subsection{Notes:}{
+Both data sets must have a date/time column with the same name, containing
+dates in valid POSIXct format.
+}
 }

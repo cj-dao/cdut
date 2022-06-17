@@ -2,10 +2,10 @@
 % Please edit documentation in R/cfun.R
 \name{trim}
 \alias{trim}
-\title{removes columns and rows that are ALL blank or NA values}
+\title{Trim}
 \usage{
 trim(data)
 }
 \description{
-removes columns and rows that are ALL blank or NA values
+Removes columns and rows that are ALL blank or NA values. Returns a dataframe.
 }

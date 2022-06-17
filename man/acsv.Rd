@@ -2,16 +2,17 @@
 % Please edit documentation in R/cfun.R
 \name{acsv}
 \alias{acsv}
-\title{reads the csv at filepath (no ".csv" needed)
-assigns dataframe to object with the same name as the csv then returns the object
-e.g.: acsv("random_data") is equivalent to:
-random_data <- read.csv("random_data.csv")}
+\title{Assign CSV}
 \usage{
 acsv(filepath)
 }
 \description{
-reads the csv at filepath (no ".csv" needed)
-assigns dataframe to object with the same name as the csv then returns the object
-e.g.: acsv("random_data") is equivalent to:
-random_data <- read.csv("random_data.csv")
+Read a CSV and assign it to a variable of the same name. It also returns
+the data frame, but isn't meant to be used in a pipeline.
+}
+\examples{
+# The following two lines of code are identical:
+acsv("your_data")
+your_data <- read.csv("your_data.csv")
+
 }

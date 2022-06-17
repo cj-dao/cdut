@@ -2,20 +2,24 @@
 % Please edit documentation in R/cfun.R
 \name{cut_to_times}
 \alias{cut_to_times}
-\title{selects timepoints from dataset that are closest in time to a shorter list
-data: the dataset
-data_time_column: the time column of the dataset to reference. No quotes needed.
-times: list of times to cut down to
-Note: "times" is a column, not the entire short dataset.
-Note: the time column of the dataset will be replaced with the target times.}
+\title{Cut to times}
 \usage{
 cut_to_times(data, data_time_column, times)
 }
+\arguments{
+\item{data}{The main data set.}
+
+\item{data_time_column}{The time column of main data set.}
+
+\item{times}{The time column of the target data set}
+}
 \description{
-selects timepoints from dataset that are closest in time to a shorter list
-data: the dataset
-data_time_column: the time column of the dataset to reference. No quotes needed.
-times: list of times to cut down to
-Note: "times" is a column, not the entire short dataset.
-Note: the time column of the dataset will be replaced with the target times.
+Not recommended. Use \code{\link{merge_by_times}} instead.
+}
+\details{
+Use when you have two data sets with date and time columns,
+and you wish to combine the data sets by matching each data point in the
+main set to the closest time point in the target set. This function will
+return a data set identical to the main set, but with the target time column
+and with fewer data points.
 }

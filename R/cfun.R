@@ -1,13 +1,29 @@
-#' shorter infix version of acsv() for use in pipelines
-#' use as follows:
-#' "random_data" %csv% (
-#'   function1() %>%
-#'   function2() )
-#' is equivalent to:
-#' random_data <- read.csv("random_data.csv") %>%
-#'   function1() %>%
-#'   function2()
-#' NOTE: pipeline MUST be in parentheses for %csv% infix to work!
+#' CSV Infix
+#' 
+#' Infix operator used for quickly defining csv dataframes and passing them
+#' to a pipeline.
+#'  
+#' @param filepath Character type filepath without ".csv"
+#' @param pipe Rest of %>% pipeline, enclosed in `()`
+#' 
+#' @details
+#' Used when you want the object name to be the same as the csv name.
+#' MUST be used with a pipeline. If you do not want to use a pipeline, use
+#' the acsv function instead.
+#' 
+#' @examples
+#' # Basic use:
+#' "your_data" %csv% (
+#'   select(...) %>%
+#'   mutate(...) )
+#' 
+#' # The above is equivalent to:
+#' your_data <- read.csv("your_data.csv") %>%
+#'   select(...) %>%
+#'   mutate(...)
+#'   
+#' @seealso \code{\link{acsv}}
+#' 
 #' @export
 `%csv%` <- function(filepath,pipe) {
   if(!exists("%>%")) {
@@ -38,10 +54,16 @@
   assign(obj_name,dataframe,1)
 }
 
-#' reads the csv at filepath (no ".csv" needed)
-#' assigns dataframe to object with the same name as the csv then returns the object
-#' e.g.: acsv("random_data") is equivalent to:
-#' random_data <- read.csv("random_data.csv")
+#' Assign CSV
+#' 
+#' Read a CSV and assign it to a variable of the same name. It also returns
+#' the data frame, but isn't meant to be used in a pipeline.
+#' 
+#' @examples
+#' # The following two lines of code are identical:
+#' acsv("your_data")
+#' your_data <- read.csv("your_data.csv")
+#' 
 #' @export
 acsv <- function(filepath) {
   if(mode(filepath)!="character") {
@@ -55,7 +77,9 @@ acsv <- function(filepath) {
   return(get(obj_name))
 }
 
-#' removes columns and rows that are ALL blank or NA values
+#' Trim
+#' 
+#' Removes columns and rows that are ALL blank or NA values. Returns a dataframe.
 #' @export
 trim <- function(data) {
   data <- data.frame(lapply(data, function(x) {
@@ -65,10 +89,16 @@ trim <- function(data) {
   return(data[rowSums(is.na(data))!=ncol(data),colSums(is.na(data))!=nrow(data)])
 }
 
-#' combines date and time columns into a numerical column
-#' dcol: date column; tcol: time column.
-#' format: optional. Defaults to "%m/%d/%y %H:%M:%S"
-#' rmdt: remove collapsed date and time columns? Defaults to true.
+#' Collapse date and time
+#' 
+#' Combines date and time columns in character format
+#' into a single, numerical column using POSIXct.
+#' 
+#' @param dcol Date column.
+#' @param tcol Time column
+#' @param format Optional. Defaults to "%m/%d/%y %H:%M:%S"
+#' @param rmdt If true, removes old date and time columns. Defaults to true.
+#' 
 #' @export
 collapse_dt <- function(data,dcol,tcol,format,rmdt) {
   dcol <- deparse(substitute(dcol))
@@ -93,12 +123,21 @@ collapse_dt <- function(data,dcol,tcol,format,rmdt) {
   return (output)
 }
 
-#' selects timepoints from dataset that are closest in time to a shorter list
-#' data: the dataset
-#' data_time_column: the time column of the dataset to reference. No quotes needed.
-#' times: list of times to cut down to
-#' Note: "times" is a column, not the entire short dataset.
-#' Note: the time column of the dataset will be replaced with the target times.
+#' Cut to times
+#' 
+#' Not recommended. Use \code{\link{merge_by_times}} instead.
+#' 
+#' @param data The main data set.
+#' @param data_time_column The time column of main data set.
+#' @param times The time column of the target data set
+#' 
+#' @details 
+#' Use when you have two data sets with date and time columns,
+#' and you wish to combine the data sets by matching each data point in the
+#' main set to the closest time point in the target set. This function will
+#' return a data set identical to the main set, but with the target time column
+#' and with fewer data points.
+#' 
 #' @export
 cut_to_times <- function(data,data_time_column,times) {
   
@@ -134,11 +173,27 @@ cut_to_times <- function(data,data_time_column,times) {
   return(output)
 }
 
-#' data: larger dataset
-#' target_data: shorter dataset
-#' tcol: date_time column to reference (no quotes needed.)
-#' NOTE: the date_time column must have the same name for both datasets!
-#' returned dataset will have the dates from target_data and columns from both datasets.
+#' Merge by times
+#' 
+#' Matches one data set to another by closest time point.
+#' 
+#' @param data The main data set.
+#' @param target_data The data set with times you want to match to.
+#' @param tcol The date/time column of BOTH sets (name must be the same)
+#' 
+#' @details 
+#' \subsection{Basic use}{
+#' Use when you have two data sets with date and time columns,
+#' and you wish to combine the data sets by matching each data point in the
+#' main set to the closest time point in the target set. This function will
+#' return the target data set with additional data columns from the main
+#' data set.
+#' }
+#' 
+#' \subsection{Notes:}{
+#' Both data sets must have a date/time column with the same name, containing
+#' dates in valid POSIXct format.
+#' }
 #' @export
 merge_by_times <- function(data,target_data,tcol) {
   

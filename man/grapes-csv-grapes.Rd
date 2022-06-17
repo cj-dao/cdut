@@ -2,28 +2,36 @@
 % Please edit documentation in R/cfun.R
 \name{\%csv\%}
 \alias{\%csv\%}
-\title{shorter infix version of acsv() for use in pipelines
-use as follows:
-"random_data" \%csv\% (
-function1() \%>\%
-function2() )
-is equivalent to:
-random_data <- read.csv("random_data.csv") \%>\%
-function1() \%>\%
-function2()
-NOTE: pipeline MUST be in parentheses for \%csv\% infix to work!}
+\title{CSV Infix}
 \usage{
 filepath \%csv\% pipe
 }
+\arguments{
+\item{filepath}{Character type filepath without ".csv"}
+
+\item{pipe}{Rest of \%>\% pipeline, enclosed in \verb{()}}
+}
 \description{
-shorter infix version of acsv() for use in pipelines
-use as follows:
-"random_data" \%csv\% (
-function1() \%>\%
-function2() )
-is equivalent to:
-random_data <- read.csv("random_data.csv") \%>\%
-function1() \%>\%
-function2()
-NOTE: pipeline MUST be in parentheses for \%csv\% infix to work!
+Infix operator used for quickly defining csv dataframes and passing them
+to a pipeline.
+}
+\details{
+Used when you want the object name to be the same as the csv name.
+MUST be used with a pipeline. If you do not want to use a pipeline, use
+the acsv function instead.
+}
+\examples{
+# Basic use:
+"your_data" \%csv\% (
+  select(...) \%>\%
+  mutate(...) )
+
+# The above is equivalent to:
+your_data <- read.csv("your_data.csv") \%>\%
+  select(...) \%>\%
+  mutate(...)
+  
+}
+\seealso{
+\code{\link{acsv}}
 }
