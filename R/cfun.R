@@ -24,6 +24,7 @@
 #'   
 #' @seealso \code{\link{acsv}}
 #' 
+#' @import magrittr
 #' @export
 `%csv%` <- function(filepath,pipe) {
   if(!exists("%>%")) {
@@ -110,6 +111,7 @@ trim <- function(data) {
 #' You can optionally specify formats using format="...". By default, this function
 #' handles dmY, dmy, mdY, and mdy, prioritized in that order. It supports HMS time.
 #' }
+#' @import magrittr
 #' @export
 collapse_dt <- function(data,dcol,tcol,format,rmdt) {
   dcol <- deparse(substitute(dcol))
@@ -149,7 +151,8 @@ collapse_dt <- function(data,dcol,tcol,format,rmdt) {
 #' main set to the closest time point in the target set. This function will
 #' return a data set identical to the main set, but with the target time column
 #' and with fewer data points.
-#' 
+#'
+#' @import magrittr
 #' @export
 cut_to_times <- function(data,data_time_column,times) {
   
@@ -206,6 +209,7 @@ cut_to_times <- function(data,data_time_column,times) {
 #' Both data sets must have a date/time column with the same name, containing
 #' dates in valid POSIXct format.
 #' }
+#' @import magrittr
 #' @export
 merge_by_times <- function(data,target_data,tcol) {
   
