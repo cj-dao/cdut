@@ -92,19 +92,31 @@ trim <- function(data) {
 #' Collapse date and time
 #' 
 #' Combines date and time columns in character format
-#' into a single, numerical column using POSIXct.
+#' into a single, numerical column using the lubridate library.
 #' 
-#' @param dcol Date column.
-#' @param tcol Time column
-#' @param format Optional. Defaults to "%m/%d/%y %H:%M:%S"
+#' @param dcol Date column (no quotes)
+#' @param tcol Time column (no quotes)
+#' @param format Optional. Call ?parse_date_time for more explanation.
 #' @param rmdt If true, removes old date and time columns. Defaults to true.
 #' 
+#' @details 
+#' \subsection{Basic use}{
+#' This uses the parse_date_time function from the lubridate library to
+#' better handle heterogeneous formats. It can handle multiple date formats,
+#' even in the same data set. It returns a new data set with the specified
+#' date and time columns merged and numericalized to the POISXct class.
+#' }
+#' \subsection{Formats}{
+#' You can optionally specify formats using format="...". By default, this function
+#' handles dmY, dmy, mdY, and mdy, prioritized in that order. It supports HMS time.
+#' }
 #' @export
 collapse_dt <- function(data,dcol,tcol,format,rmdt) {
   dcol <- deparse(substitute(dcol))
   tcol <- deparse(substitute(tcol))
   if(missing(format)) {
-    format <- "%m/%d/%y %H:%M:%S"
+    format <- c("dmY","dmy","mdY","mdy") %>%
+      paste(c("HMS"))
   }
   if(missing(rmdt)) {
     rmdt <- TRUE
@@ -112,10 +124,10 @@ collapse_dt <- function(data,dcol,tcol,format,rmdt) {
   if(!(dcol %in% colnames(data) && tcol %in% colnames(data))) {
     stop("Make sure that the specified columns exist.")
   }
-  if(any(is.na(as.POSIXct(paste(data[,dcol],data[,tcol]),format=format)))) {
-    warning("Some dates returned NA. Make sure that all the dates are in the same format, and that the format is correct. You can  manually set the format with 'format='.")
-  }
-  dt_column <- data.frame(date_time = as.POSIXct(paste(data[,dcol],data[,tcol]),format=format))
+  # if(any(is.na(as.POSIXct(paste(data[,dcol],data[,tcol]),format=format)))) {
+  #   warning("Some dates returned NA. Make sure that all the dates are in the same format, and that the format is correct. You can  manually set the format with 'format='.")
+  # }
+  dt_column <- data.frame(date_time = parse_date_time(x=paste(data[,dcol],data[,tcol]),orders=format))
   output <- cbind(dt_column,data)
   if(rmdt) {
     output <- select(output,-all_of(dcol),-all_of(tcol))

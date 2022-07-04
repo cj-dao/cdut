@@ -7,15 +7,27 @@
 collapse_dt(data, dcol, tcol, format, rmdt)
 }
 \arguments{
-\item{dcol}{Date column.}
+\item{dcol}{Date column (no quotes)}
 
-\item{tcol}{Time column}
+\item{tcol}{Time column (no quotes)}
 
-\item{format}{Optional. Defaults to "\%m/\%d/\%y \%H:\%M:\%S"}
+\item{format}{Optional. Call ?parse_date_time for more explanation.}
 
 \item{rmdt}{If true, removes old date and time columns. Defaults to true.}
 }
 \description{
 Combines date and time columns in character format
-into a single, numerical column using POSIXct.
+into a single, numerical column using the lubridate library.
+}
+\details{
+\subsection{Basic use}{
+This uses the parse_date_time function from the lubridate library to
+better handle heterogeneous formats. It can handle multiple date formats,
+even in the same data set. It returns a new data set with the specified
+date and time columns merged and numericalized to the POISXct class.
+}
+\subsection{Formats}{
+You can optionally specify formats using format="...". By default, this function
+handles dmY, dmy, mdY, and mdy, prioritized in that order. It supports HMS time.
+}
 }
