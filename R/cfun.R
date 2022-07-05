@@ -24,7 +24,7 @@
 #'   
 #' @seealso \code{\link{acsv}}
 #' 
-#' @import magrittr
+#' @importFrom magrittr `%>%`
 #' @export
 `%csv%` <- function(filepath,pipe) {
   if(!exists("%>%")) {
@@ -111,7 +111,8 @@ trim <- function(data) {
 #' You can optionally specify formats using format="...". By default, this function
 #' handles dmY, dmy, mdY, and mdy, prioritized in that order. It supports HMS time.
 #' }
-#' @import magrittr
+#' @importFrom magrittr `%>%`
+#' @importFrom lubridate parse_date_time
 #' @export
 collapse_dt <- function(data,dcol,tcol,format,rmdt) {
   dcol <- deparse(substitute(dcol))
@@ -152,7 +153,7 @@ collapse_dt <- function(data,dcol,tcol,format,rmdt) {
 #' return a data set identical to the main set, but with the target time column
 #' and with fewer data points.
 #'
-#' @import magrittr
+#' @importFrom magrittr `%>%`
 #' @export
 cut_to_times <- function(data,data_time_column,times) {
   
@@ -209,7 +210,7 @@ cut_to_times <- function(data,data_time_column,times) {
 #' Both data sets must have a date/time column with the same name, containing
 #' dates in valid POSIXct format.
 #' }
-#' @import magrittr
+#' @importFrom magrittr `%>%`
 #' @export
 merge_by_times <- function(data,target_data,tcol) {
   
