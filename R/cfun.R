@@ -25,6 +25,7 @@
 #' @seealso \code{\link{acsv}}
 #' 
 #' @importFrom magrittr `%>%`
+#' @import dplyr
 #' @export
 `%csv%` <- function(filepath,pipe) {
   if(!exists("%>%")) {
@@ -113,6 +114,7 @@ trim <- function(data) {
 #' }
 #' @importFrom magrittr `%>%`
 #' @importFrom lubridate parse_date_time
+#' @import dplyr
 #' @export
 collapse_dt <- function(data,dcol,tcol,format,rmdt) {
   dcol <- deparse(substitute(dcol))
@@ -154,6 +156,7 @@ collapse_dt <- function(data,dcol,tcol,format,rmdt) {
 #' and with fewer data points.
 #'
 #' @importFrom magrittr `%>%`
+#' @import dplyr
 #' @export
 cut_to_times <- function(data,data_time_column,times) {
   
@@ -211,6 +214,7 @@ cut_to_times <- function(data,data_time_column,times) {
 #' dates in valid POSIXct format.
 #' }
 #' @importFrom magrittr `%>%`
+#' @import dplyr
 #' @export
 merge_by_times <- function(data,target_data,tcol) {
   
