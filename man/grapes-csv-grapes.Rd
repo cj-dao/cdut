@@ -22,7 +22,7 @@ the acsv function instead.
 }
 \examples{
 # Basic use:
-"your_data" \%csv\% (
+your_data \%csv\% (
   select(...) \%>\%
   mutate(...) )
 

@@ -12,7 +12,7 @@ the data frame, but isn't meant to be used in a pipeline.
 }
 \examples{
 # The following two lines of code are identical:
-acsv("your_data")
+acsv(your_data)
 your_data <- read.csv("your_data.csv")
 
 }

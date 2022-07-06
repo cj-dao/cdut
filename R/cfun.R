@@ -13,7 +13,7 @@
 #' 
 #' @examples
 #' # Basic use:
-#' "your_data" %csv% (
+#' your_data %csv% (
 #'   select(...) %>%
 #'   mutate(...) )
 #' 
@@ -37,12 +37,25 @@
     }
     stop("Pipeline infix operator not supported. Import dplyr or magrittr libraries.")
   }
-  if(mode(filepath)!="character") {
-    stop("Filepath must be a string.")
+  if(mode(substitute(filepath))=="name") {
+    filepath <- deparse(substitute(filepath))
   }
   if(substr(filepath,nchar(filepath)-3,nchar(filepath))!=".csv") {
     filepath <- paste(filepath,".csv",sep="")
   }
+  
+  # Check if filepath exists
+  tryCatch(read.csv(filepath),
+           error=function(cond){
+              message("error")
+              return(NA)
+             },
+           warning=function(err){
+             err$message <- paste("Problem with reading file.",
+                  " Check if ", filepath, " exists.")
+             stop(err)
+             })
+  
   obj_name <- substr(filepath,1,nchar(filepath)-4)
   pipe_text <- deparse(substitute(pipe))
   if((substr(pipe_text,1,1)!="(" || substr(pipe_text,nchar(pipe_text),nchar(pipe_text))!=")")) {
@@ -52,7 +65,9 @@
     pipe_text <- substr(pipe_text,2,nchar(pipe_text)-1)
   }
   exe_text <- paste("dataframe<-read.csv(filepath) %>%",pipe_text)
+  
   eval(parse(text=exe_text))
+  
   assign(obj_name,dataframe,1)
 }
 
@@ -63,17 +78,30 @@
 #' 
 #' @examples
 #' # The following two lines of code are identical:
-#' acsv("your_data")
+#' acsv(your_data)
 #' your_data <- read.csv("your_data.csv")
 #' 
 #' @export
 acsv <- function(filepath) {
-  if(mode(filepath)!="character") {
-    stop("Filepath must be a string.")
+  if(mode(substitute(filepath))=="name") {
+    filepath <- deparse(substitute(filepath))
   }
   if(substr(filepath,nchar(filepath)-3,nchar(filepath))!=".csv") {
     filepath <- paste(filepath,".csv",sep="")
   }
+  
+  # Check if filepath exists
+  tryCatch(read.csv(filepath),
+           error=function(cond){
+             message("error")
+             return(NA)
+           },
+           warning=function(err){
+             err$message <- paste("Problem with reading file.",
+                                  " Check if ", filepath, " exists.")
+             stop(err)
+           })
+  
   obj_name <- substr(filepath,1,nchar(filepath)-4)
   assign(obj_name,read.csv(filepath),1)
   return(get(obj_name))
